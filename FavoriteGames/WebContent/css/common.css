@@ -1,0 +1,265 @@
+#top_login{
+	margin-right: 10px;
+}
+
+#reviewOrLogout{
+	margin-bottom:20px;
+}
+
+#logout{
+	margin:0 10px;
+}
+
+#user_id{
+	font-weight: bold;
+}
+
+#mypage_userName{
+	margin-right: 5px;
+}
+
+
+
+#link_bottom{
+	height: 30px;
+	width: 250px;
+	padding-top: 20px;
+	margin: 0 auto;
+	border:1px black solid;
+	border-radius: 50px;
+	background: skyblue;
+}
+
+#topPage{
+    position: relative;
+    top:170px;
+    text-align:center;
+}
+
+#mypage{
+    position: relative;
+    top:110px;
+    text-align:center;
+}
+
+#select{
+    position: relative;
+    top:150px;
+    text-align:center;
+}
+
+#selectResult{
+    position: relative;
+    top:150px;
+    text-align:center;
+}
+
+#selectResult_table{
+	margin:0 auto;
+}
+
+
+#insertSoft{
+	position:relative;
+	top:150px;
+	text-align:center;
+}
+
+#review{
+   position:relative;
+   top:120px;
+   margin-left: 500px;
+}
+
+#insertSoft_form{
+	text-align: left;
+	width:230px;
+	margin:0 auto;
+	boader: 1 black solid;
+	background: gray;
+}
+
+#userName_review{
+	font-weight: bold;
+	color: darkcyan;
+}
+
+#review_form{
+	width: 230px;
+	padding: 20px 20px;
+	margin-bottom: 20px;
+	border: 1px black solid;
+	background: gray;
+}
+
+#insertSoftConfirm{
+	position:relative;
+	top:150px;
+	text-align:center;
+}
+
+#insertSoftConfirm_form{
+	width:230px;
+	margin:0 auto;
+	boader: 1 black solid;
+	background: gray;
+}
+#updateSoft{
+	position:relative;
+	top:150px;
+	text-align:center;
+}
+
+#updateSoft_form{
+	width:230px;
+	margin:0 auto;
+	boader: 1 black solid;
+	background: gray;
+}
+
+#updateSoftInput{
+	position:relative;
+	top:150px;
+	text-align:center;
+}
+
+#updateSoftInput_form{
+	text-align: left;
+	width:230px;
+	margin:0 auto;
+	boader: 1 black solid;
+	background: gray;
+}
+
+#updateSoftConfirm{
+	position:relative;
+	top:150px;
+	text-align:center;
+}
+
+#updateSoftConfirm_form{
+	width:230px;
+	margin:0 auto;
+	boader: 1 black solid;
+	background: gray;
+}
+
+#deleteSoft{
+	position:relative;
+	top:200px;
+	text-align:center;
+}
+
+#deleteSoft_form{
+	width:230px;
+	margin:0 auto;
+	boader: 1 black solid;
+	background: gray;
+}
+
+#deleteSoftConfirm{
+	position:relative;
+	top:200px;
+	text-align:center;
+}
+
+#deleteSoftConfirm_form{
+	width:230px;
+	margin:0 auto;
+	boader: 1 black solid;
+	background: gray;
+}
+
+#deleteUser{
+	position:relative;
+	top:200px;
+	text-align:center;
+}
+
+#insertUser{
+	position:relative;
+	top:150px;
+	text-align:center;
+}
+
+#insertUser_form{
+	text-align: left;
+	width:230px;
+	margin:0 auto;
+	boader: 1 black solid;
+	background: gray;
+}
+
+#insertUserConfirm{
+	position:relative;
+	top:150px;
+	text-align:center;
+}
+
+#insertUserConfirm_form{
+	width:280px;
+	margin:0 auto;
+	boader: 1 black solid;
+	background: gray;
+}
+
+#login{
+	position:relative;
+	top:200px;
+	text-align:center;
+}
+
+#login_form{
+	width:230px;
+	margin:0 auto;
+	boader: 1 black solid;
+	background: gray;
+}
+
+
+
+
+.error{
+	color:red;
+	font-weight: bold;
+}
+
+.item{
+	font-weight: bold;
+}
+
+.link{
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.link:hover{
+	font-weight: bold;
+	color: blue;
+}
+
+.review_link{
+	text-decoration: none;
+	font-weight: bold;
+	color: black;
+}
+
+.review_link:hover{
+	font-weight: bold;
+	color: white;
+}
+
+.autoPage{
+	position:relative;
+	top:200px;
+	text-align: center;
+}
+
+.color_and_fontWeight{
+	color: darkcyan;
+	font-weight: bold;
+}
+
+.fontWeight{
+	font-weight: bold;
+}
