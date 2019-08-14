@@ -19,21 +19,21 @@ public class MypageServlet extends HttpServlet {
 
 		if(selectPage.equals("select")) {
 
-		request.getRequestDispatcher("/WEB-INF/softSelect.jsp").forward(request, response);
+		request.getRequestDispatcher("softSelect.jsp").forward(request, response);
 
 		} else if(selectPage.equals("insert")) {
 
-			request.getRequestDispatcher("/WEB-INF/softInsert.jsp").forward(request, response);
+			request.getRequestDispatcher("softInsert.jsp").forward(request, response);
 
 		} else if(selectPage.equals("update")) {
 
-			request.getRequestDispatcher("/WEB-INF/softUpdate.jsp").forward(request, response);
+			request.getRequestDispatcher("update.jsp").forward(request, response);
 
 		} else if(selectPage.equals("delete")) {
 
-			request.getRequestDispatcher("/WEB-INF/softDelete.jsp").forward(request, response);
+			request.getRequestDispatcher("softDelete.jsp").forward(request, response);
 
-		} else 	request.getRequestDispatcher("/WEB-INF/mypage.jsp").forward(request, response);
+		} else 	request.getRequestDispatcher("mypage.jsp").forward(request, response);
 
 
 	}

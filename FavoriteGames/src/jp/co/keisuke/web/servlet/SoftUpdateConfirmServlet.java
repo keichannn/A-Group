@@ -29,7 +29,7 @@ public class SoftUpdateConfirmServlet extends HttpServlet {
         sessionInfo.setPrevUpdateSoft(null);
         sessionInfo.setUpdateSoft(null);
 
-        request.getRequestDispatcher("/WEB-INF/ResultToMypage.jsp").forward(request, response);
+        request.getRequestDispatcher("ResultToMypage.jsp").forward(request, response);
 
 	}
 

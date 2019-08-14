@@ -16,6 +16,27 @@ import jp.co.keisuke.web.util.ParamUtil;
 public class SoftDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		request.setCharacterEncoding("UTF-8");
+		String softName = request.getParameter("softName");
+
+	        SoftInfoService softInfoService = new SoftInfoService();
+	        SoftInfo softInfo = softInfoService.findBySoftName(softName);
+
+
+	        if(softInfo != null) {
+
+	        	SessionInfo sessionInfo = ParamUtil.getSessionInfo(request.getSession());
+	        	sessionInfo.setSoftDelete(new SoftInfo());
+	        	sessionInfo.getSoftDelete().setSoftName(softName);;
+
+	        }
+
+	        request.setAttribute("deleteSoft", softInfo);
+	        request.getRequestDispatcher("softDeleteConfirm.jsp").forward(request, response);
+	}
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		request.setCharacterEncoding("UTF-8");
@@ -25,14 +46,14 @@ public class SoftDeleteServlet extends HttpServlet {
 
 	        if (ParamUtil.isNullOrEmpty(softName)) {
 
-	            request.setAttribute("softNameErrMsg", "ソフト名は必須です");
+	            request.setAttribute("softNameErrMsg", "※ ソフト名は必須です");
 	            hasError = true;
 
 	        }
 
 	        if (hasError) {
 
-	            request.getRequestDispatcher("/WEB-INF/softDelete.jsp").forward(request, response);
+	            request.getRequestDispatcher("softDelete.jsp").forward(request, response);
 	            return;
 
 	        }
@@ -42,8 +63,8 @@ public class SoftDeleteServlet extends HttpServlet {
 
 	        if (softInfo == null) {
 
-	            request.setAttribute("errMsg", "入力されたデータは存在しません");
-	            request.getRequestDispatcher("/WEB-INF/softDelete.jsp").forward(request, response);
+	            request.setAttribute("errMsg", "※ 入力されたデータは存在しません");
+	            request.getRequestDispatcher("softDelete.jsp").forward(request, response);
 	            return;
 
 	        } else if(softInfo != null) {
@@ -56,7 +77,7 @@ public class SoftDeleteServlet extends HttpServlet {
 	        }
 
 	        request.setAttribute("deleteSoft", softInfo);
-	        request.getRequestDispatcher("/WEB-INF/softDeleteConfirm.jsp").forward(request, response);
-	    }
+	        request.getRequestDispatcher("softDeleteConfirm.jsp").forward(request, response);
+	}
 
 }

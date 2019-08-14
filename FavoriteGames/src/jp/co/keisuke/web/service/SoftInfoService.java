@@ -26,7 +26,6 @@ public class SoftInfoService {
 
     public SoftInfo findById(UserInfo loginUser) {
 
-
         try (Connection conn = DbUtil.getConnection()) {
             SoftInfoDao softInfoDao = new SoftInfoDao(conn);
             return softInfoDao.findById(loginUser);
@@ -36,6 +35,20 @@ public class SoftInfoService {
         }
 
         return null;
+    }
+
+    public List<SoftInfo> findAll(UserInfo loginUser) {
+
+        try (Connection conn = DbUtil.getConnection()) {
+            SoftInfoDao softInfoDao = new SoftInfoDao(conn);
+            return softInfoDao.findAll(loginUser);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
     }
 
     public boolean existSoftById(UserInfo loginUser) {
@@ -56,11 +69,48 @@ public class SoftInfoService {
 
     }
 
+    public List<SoftInfo> findAllSoftInfo() {
+
+        try (Connection conn = DbUtil.getConnection()) {
+            SoftInfoDao softInfoDao = new SoftInfoDao(conn);
+            return softInfoDao.findAllSoftInfo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
+
     public boolean existsSoftBySoftName(String softName) {
 
         return findBySoftName(softName) != null;
 
     }
+
+    public boolean existsSoftByPrevUpdateSoftNameAndUpdateSoftName(String prevUpdateSoftName, String updateSoftName) {
+
+    	boolean whetherExist=false;
+
+    	List<SoftInfo> softInfo = findAllSoftInfo();
+
+    	for(SoftInfo soft : softInfo) {
+    		if(soft.getSoftName().equals(prevUpdateSoftName)) {
+    			soft.setSoftName("");
+    		}
+    	}
+
+    	for(SoftInfo soft : softInfo) {
+    		if(soft.getSoftName().equals(updateSoftName)) {
+    			whetherExist = true;
+    		}
+    	}
+
+        return whetherExist;
+
+    }
+
+
 
     public void insert(SoftInfo resisterSoftInfo, UserInfo loginUserInfo) {
 

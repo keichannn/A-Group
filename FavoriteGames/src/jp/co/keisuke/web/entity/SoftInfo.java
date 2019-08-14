@@ -4,6 +4,7 @@ import jp.co.keisuke.web.util.ParamUtil;
 
 public class SoftInfo {
 
+	private Integer softId;
 	private Integer id;
 	private String softName;
 	private Integer genreId;
@@ -12,11 +13,12 @@ public class SoftInfo {
 	private String modelStr;
 	private String releaseDate;
 	private String price;
+	private String url;
 
 	public SoftInfo() {}
 
 	public SoftInfo(Integer id, String softName, Integer genreId, String genreStr,
-			Integer modelId, String modelStr, String releaseDate, String price) {
+			Integer modelId, String modelStr, String releaseDate, String price, String url) {
 		this.id = id;
 		this.softName = softName;
 		this.genreId = genreId;
@@ -25,6 +27,21 @@ public class SoftInfo {
 		this.modelStr = modelStr;
 		this.releaseDate = releaseDate;
 		this.price = price;
+		this.url = url;
+	}
+
+	public SoftInfo(Integer softId, Integer id, String softName, Integer genreId, String genreStr,
+			Integer modelId, String modelStr, String releaseDate, String price, String url) {
+		this(id,softName,genreId,genreStr,modelId,modelStr,releaseDate,price,url);
+		this.softId = softId;
+	}
+
+	public Integer getSoftId() {
+		return softId;
+	}
+
+	public void setSoftId(Integer softId) {
+		this.softId = softId;
 	}
 
 	public Integer getId() {
@@ -91,6 +108,14 @@ public class SoftInfo {
 		this.price = price;
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	//elseMethod
     public boolean softNameisEmptyCondition() {
         return id == null && ParamUtil.isNullOrEmpty(softName);
@@ -108,6 +133,7 @@ public class SoftInfo {
 		result = prime * result + ((price == null) ? 0 : price.hashCode());
 		result = prime * result + ((releaseDate == null) ? 0 : releaseDate.hashCode());
 		result = prime * result + ((softName == null) ? 0 : softName.hashCode());
+		result = prime * result + ((url == null) ? 0 : url.hashCode());
 		return result;
 	}
 
@@ -115,17 +141,13 @@ public class SoftInfo {
 	public boolean equals(Object obj) {
 
 		if (this == obj)
-
 			return true;
 
 		if (obj == null)
-
 			return false;
 
 		if (getClass() != obj.getClass())
-
 			return false;
-
 		SoftInfo other = (SoftInfo) obj;
 
 		if (genreId == null) {
@@ -191,9 +213,15 @@ public class SoftInfo {
 
 		} else if (!softName.equals(other.softName))
 			return false;
+
+		if (url == null) {
+
+			if (other.url != null)
+				return false;
+
+		} else if (!url.equals(other.url))
+			return false;
 		return true;
 	}
-
-
 
 }

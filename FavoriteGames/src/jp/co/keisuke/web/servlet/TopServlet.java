@@ -28,7 +28,6 @@ public class TopServlet extends HttpServlet {
         GenreService genreService = new GenreService();
         ModelService modelService = new ModelService();
 
-
         List<Age> ageList = ageService.findAll();
         List<Genre> genreList = genreService.findAll();
         List<Model> modelList = modelService.findAll();
@@ -39,9 +38,10 @@ public class TopServlet extends HttpServlet {
         sessionInfo.setAgeList(ageList);
         sessionInfo.setGenreList(genreList);
         sessionInfo.setModelList(modelList);
+
         session.setAttribute("sessionInfo", sessionInfo);
 
-		request.getRequestDispatcher("/WEB-INF/top.jsp").forward(request, response);
+		request.getRequestDispatcher("topPage.jsp").forward(request, response);
 
 	}
 }

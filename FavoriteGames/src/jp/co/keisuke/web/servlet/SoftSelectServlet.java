@@ -23,21 +23,21 @@ public class SoftSelectServlet extends HttpServlet {
         String softName = request.getParameter("softName");
 
         SessionInfo sessionInfo = ParamUtil.getSessionInfo(request.getSession());
-        SoftInfo cond = new SoftInfo(null, softName, null, null, null, null, null, null);
+        SoftInfo cond = new SoftInfo(null, softName, null, null, null, null, null, null, null);
         SoftInfoService softInfoService = new SoftInfoService();
 
         List<SoftInfo> list = softInfoService.find(cond, sessionInfo.getLoginUser());
 
         if (list.isEmpty()) {
 
-            request.setAttribute("errMsg", "入力されたデータはありませんでした");
-            request.getRequestDispatcher("/WEB-INF/softSelect.jsp").forward(request, response);
+            request.setAttribute("errMsg", "※ 入力されたデータはありませんでした");
+            request.getRequestDispatcher("softSelect.jsp").forward(request, response);
             return;
 
         }
 
             request.setAttribute("softList", list);
-            request.getRequestDispatcher("/WEB-INF/softSelectResult.jsp").forward(request, response);
+            request.getRequestDispatcher("softSelectResult.jsp").forward(request, response);
 
 
 

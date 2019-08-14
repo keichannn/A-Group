@@ -26,7 +26,7 @@ public class SoftInsertConfirmServlet extends HttpServlet {
 
         sessionInfo.setRegisterSoft(null);
 
-        request.getRequestDispatcher("/WEB-INF/ResultToMypage.jsp").forward(request, response);
+        request.getRequestDispatcher("ResultToMypage.jsp").forward(request, response);
 
 	}
 

@@ -8,11 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.co.keisuke.web.entity.Review;
+import jp.co.keisuke.web.entity.UserInfo;
 
 public class ReviewDao {
 
-	private static final String INSERT = "INSERT INTO review VALUES(?,?,?,?,?)";
 	private static final String SELECT_ALL ="SELECT * FROM review";
+	private static final String INSERT = "INSERT INTO review(id,user_name,soft_name,model_str,contents) VALUES(?,?,?,?,?)";
+	private static final String DELETE = "DELETE FROM review WHERE id = ? AND contents = ?";
 
 	private Connection conn;
 
@@ -28,7 +30,7 @@ public class ReviewDao {
 
     		while(rs.next()) {
 
-    			Review reviewInfo = new Review(rs.getInt("id"), rs.getString("user_name"), rs.getString("soft_str"), rs.getString("model_str"), rs.getString("contents"));
+    			Review reviewInfo = new Review(rs.getInt("review_id"), rs.getInt("id"), rs.getString("user_name"), rs.getString("soft_name"), rs.getString("model_str"), rs.getString("contents"));
     			list.add(reviewInfo);
 
     		}
@@ -41,6 +43,21 @@ public class ReviewDao {
 
 	}
 
+	public void find(String deleteReview, UserInfo loginUser) {
+
+    	try(PreparedStatement stmt = conn.prepareStatement(DELETE)){
+
+    		stmt.setInt(1, loginUser.getId());
+    		stmt.setString(2, deleteReview);
+
+    		stmt.executeUpdate();
+
+    	} catch(SQLException e) {
+    		throw new RuntimeException(e);
+    	}
+
+	}
+
 	public void insert(Review reviewInfo) {
 
     	try(PreparedStatement stmt = conn.prepareStatement(INSERT)){
@@ -50,6 +67,21 @@ public class ReviewDao {
     		stmt.setString(3, reviewInfo.getSoftStr());
     		stmt.setString(4, reviewInfo.getModelStr());
     		stmt.setString(5, reviewInfo.getContents());
+
+    		stmt.executeUpdate();
+
+    	} catch(SQLException e) {
+    		throw new RuntimeException(e);
+    	}
+
+	}
+
+	public void delete(String deleteReview , UserInfo loginUser) {
+
+    	try(PreparedStatement stmt = conn.prepareStatement(DELETE)){
+
+    		stmt.setInt(1, loginUser.getId());
+    		stmt.setString(2, deleteReview);
 
     		stmt.executeUpdate();
 

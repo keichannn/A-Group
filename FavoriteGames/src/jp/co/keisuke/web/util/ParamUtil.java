@@ -1,6 +1,9 @@
 package jp.co.keisuke.web.util;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
 
@@ -83,6 +86,40 @@ public class ParamUtil {
         }
 
         return "";
+    }
+
+    public static boolean confirmPriceWhetherTrue(String priceStr) {
+
+    	if(priceStr.matches("\\d+")||priceStr.matches("URL参照")||priceStr.matches("未定")) {
+    		return true;
+    	}
+
+    	return false;
+    }
+
+    public static String getPrice(String str) {
+
+        Matcher matcher = Pattern.compile("(\\d{3})").matcher(makePriceByPriceStr(str));
+        List<String> strs =new ArrayList<String>();
+        //前0を除去する
+        if(matcher.find()) {
+            strs.add(Integer.parseInt(matcher.group()) + "");
+        }
+        while(matcher.find()) {
+            strs.add(matcher.group());
+        }
+        //,を付加するのはreduceを使ったほうがすっきりする
+        return strs
+                .stream()
+                .reduce((s,s1)-> s+","+s1)
+                .get();
+
+    }
+
+    public static String makePriceByPriceStr(String priceStr) {
+        if(priceStr.length()%3 ==2)return "0" + priceStr;
+        else if(priceStr.length()%3 ==1)return "00" + priceStr;
+        else return priceStr;
     }
 
     public static boolean checkPrevUpdateSoftEqualsUpdateSoft(SoftInfo prevUpdateSoft, SoftInfo updateSoft) {

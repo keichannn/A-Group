@@ -28,7 +28,7 @@ public class SoftDeleteConfirmServlet extends HttpServlet {
 
 		sessionInfo.setSoftDelete(null);
 
-		request.getRequestDispatcher("/WEB-INF/ResultToMypage.jsp").forward(request, response);
+		request.getRequestDispatcher("ResultToMypage.jsp").forward(request, response);
 
 	}
 }

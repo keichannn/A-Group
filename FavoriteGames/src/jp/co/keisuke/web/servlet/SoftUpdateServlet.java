@@ -17,7 +17,9 @@ public class SoftUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/softUpdate.jsp").forward(request, response);
+
+        	request.getRequestDispatcher("softUpdate.jsp").forward(request, response);
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -26,8 +28,8 @@ public class SoftUpdateServlet extends HttpServlet {
         String softName = request.getParameter("softName");
 
         if (ParamUtil.isNullOrEmpty(softName)) {
-            request.setAttribute("softNameErrMsg", "ソフト名は必須です");
-            request.getRequestDispatcher("/WEB-INF/softUpdate.jsp").forward(request, response);
+            request.setAttribute("softNameErrMsg", "※ ソフト名は必須です");
+            request.getRequestDispatcher("softUpdate.jsp").forward(request, response);
             return;
         }
 
@@ -36,8 +38,8 @@ public class SoftUpdateServlet extends HttpServlet {
 
         if (softInfo == null) {
 
-            request.setAttribute("errMsg", "入力されたデータは存在しません");
-            request.getRequestDispatcher("/WEB-INF/softUpdate.jsp").forward(request, response);
+            request.setAttribute("errMsg", "※ 入力されたデータは存在しません");
+            request.getRequestDispatcher("softUpdate.jsp").forward(request, response);
             return;
 
         }
@@ -47,16 +49,31 @@ public class SoftUpdateServlet extends HttpServlet {
 
         updateSoft.setSoftName(softInfo.getSoftName());
         updateSoft.setGenreId(softInfo.getGenreId());;
-        updateSoft.setGenreStr(ParamUtil.getGenreNameByGenreId(softInfo.getGenreId(), sessionInfo.getGenreList()));
-        updateSoft.setModelId(softInfo.getModelId());
-        updateSoft.setModelStr(ParamUtil.getModelNameByModelId(softInfo.getModelId(), sessionInfo.getModelList()));
+
+
+        try {
+
+            updateSoft.setGenreStr(ParamUtil.getGenreNameByGenreId(softInfo.getGenreId(), sessionInfo.getGenreList()));
+            updateSoft.setModelId(softInfo.getModelId());
+            updateSoft.setModelStr(ParamUtil.getModelNameByModelId(softInfo.getModelId(), sessionInfo.getModelList()));
+
+        } catch(Exception e) {
+
+        request.setAttribute("errMsg1", "※ 情報を取得できませんでした。");
+        request.setAttribute("errMsg2","一度TOPへ戻り、画面を更新するか、");
+        request.setAttribute("errMsg3","ログアウトしてください。");
+        request.getRequestDispatcher("softUpdate.jsp").forward(request, response);
+
+    }
+
         updateSoft.setReleaseDate(softInfo.getReleaseDate());
         updateSoft.setPrice(softInfo.getPrice());
+        updateSoft.setUrl(softInfo.getUrl());
 
         sessionInfo.setPrevUpdateSoft(softInfo);
         sessionInfo.setUpdateSoft(updateSoft);
 
-        request.getRequestDispatcher("/WEB-INF/softUpdateInput.jsp").forward(request, response);
+        request.getRequestDispatcher("softUpdateInput.jsp").forward(request, response);
 
 	}
 }

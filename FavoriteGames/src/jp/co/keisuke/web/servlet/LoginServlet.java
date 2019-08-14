@@ -18,7 +18,7 @@ public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+    	request.getRequestDispatcher("login.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,18 +30,18 @@ public class LoginServlet extends HttpServlet {
 
         if (ParamUtil.isNullOrEmpty(loginId)) {
 
-            request.setAttribute("idErrMsg", "IDは必須です");
+            request.setAttribute("idErrMsg", "※ IDは必須です");
             hasError = true;
         }
 
         if (ParamUtil.isNullOrEmpty(pass)) {
 
-            request.setAttribute("passErrMsg", "PASSは必須です");
+            request.setAttribute("passErrMsg", "※ PASSは必須です");
             hasError = true;
         }
 
         if (hasError) {
-            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
 
@@ -56,12 +56,12 @@ public class LoginServlet extends HttpServlet {
             sessionInfo.setLoginUser(user);
             session.setAttribute("sessionInfo", sessionInfo);
 
-            request.getRequestDispatcher("/WEB-INF/mypage.jsp").forward(request, response);
+            request.getRequestDispatcher("mypage.jsp").forward(request, response);
 
         } else {
 
-            request.setAttribute("errMsg", "IDまたはPASSが間違っています");
-            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            request.setAttribute("errMsg", "※ IDまたはPASSが間違っています");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
 
         }
 	}

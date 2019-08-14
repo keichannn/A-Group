@@ -38,13 +38,13 @@ public class UserDeleteServlet extends HttpServlet {
 
 			sessionInfo.setLoginUser(null);
 
-			request.getRequestDispatcher("/WEB-INF/userDeleteResult.jsp").forward(request, response);
+			request.getRequestDispatcher("userDeleteResult.jsp").forward(request, response);
 
 			return;
 
 		}
 
-		request.getRequestDispatcher("/WEB-INF/userDelete.jsp").forward(request, response);
+		request.getRequestDispatcher("userDelete.jsp").forward(request, response);
 
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import jp.co.keisuke.web.dao.ReviewDao;
 import jp.co.keisuke.web.entity.Review;
+import jp.co.keisuke.web.entity.UserInfo;
 import jp.co.keisuke.web.util.DbUtil;
 
 public class ReviewService {
@@ -46,5 +47,19 @@ public class ReviewService {
 
 	}
 
+	public void delete(String deleteReview, UserInfo loginUser) {
+
+        try (Connection conn = DbUtil.getConnection()) {
+
+        	ReviewDao reviewDao = new ReviewDao(conn);
+            reviewDao.delete(deleteReview, loginUser);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+	}
 
 }

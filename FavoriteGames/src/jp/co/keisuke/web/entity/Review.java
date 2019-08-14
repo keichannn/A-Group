@@ -4,6 +4,7 @@ import jp.co.keisuke.web.util.ParamUtil;
 
 public class Review {
 
+	private Integer reviewId;
 	private Integer id;
 	private String userName;
 	private String softStr;
@@ -18,6 +19,20 @@ public class Review {
 		this.softStr = softStr;
 		this.modelStr = modelStr;
 		this.contents = contents;
+	}
+
+	public Review(Integer reviewId, Integer id, String userName, String softStr, String modelStr, String contents) {
+		this(id,userName,softStr,modelStr,contents);
+		this.reviewId = reviewId;
+	}
+
+	public Integer getReviewId() {
+		return reviewId;
+	}
+
+
+	public void setReviewId(Integer reviewId) {
+		this.reviewId = reviewId;
 	}
 
 	public Integer getId() {

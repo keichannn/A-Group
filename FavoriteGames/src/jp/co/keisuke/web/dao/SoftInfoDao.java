@@ -12,13 +12,14 @@ import jp.co.keisuke.web.entity.UserInfo;
 
 public class SoftInfoDao {
 
-    private static final String SELECT = "SELECT id, soft_name, genre_str, model_str, release_date, price FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id WHERE ";
+	private static final String SELECT_ALL_SOFT = "SELECT id, soft_name, s.genre_id, genre_str, s.model_id, model_str, release_date, price, url FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id";
+    private static final String SELECT = "SELECT soft_id, id, soft_name, genre_str, model_str, release_date, price, url FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id WHERE ";
     private static final String SELECT_BY_ID = "SELECT id FROM soft_information WHERE id = ?";
-    private static final String SELECT_BY_SOFT_NAME = "SELECT soft_name, s.genre_id, genre_str, s.model_id, model_str, release_date, price FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id WHERE soft_name = ?";
-    private static final String SELECT_ALL = "SELECT id, soft_name, s.genre_id, genre_str, s.model_id, model_str, release_date, price FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id WHERE id = ? ORDER BY id";
+    private static final String SELECT_BY_SOFT_NAME = "SELECT soft_name, s.genre_id, genre_str, s.model_id, model_str, release_date, price, url FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id WHERE soft_name = ?";
+    private static final String SELECT_ALL = "SELECT soft_id, id, soft_name, s.genre_id, genre_str, s.model_id, model_str, release_date, price, url FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id WHERE id = ? ORDER BY soft_id";
     private static final String ORDER_BY = " ORDER BY id";
-    private static final String INSERT = "INSERT INTO soft_information VALUES (?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE = "UPDATE soft_information SET soft_name = ? ,genre_id = ?, model_id = ?, release_date = ?, price = ? WHERE soft_name = ? AND id = ?";
+    private static final String INSERT = "INSERT INTO soft_information(id,soft_name,genre_id,model_id,release_date,price,url) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE = "UPDATE soft_information SET soft_name = ? ,genre_id = ?, model_id = ?, release_date = ?, price = ? , url = ? WHERE soft_name = ? AND id = ?";
     private static final String DELETE_BY_SOFT_NAME_AND_ID = "delete from soft_information where soft_name = ? AND id = ?";
     private static final String DELETE_BY_ID = "delete from soft_information where id = ?";
 
@@ -26,6 +27,32 @@ public class SoftInfoDao {
 
     public SoftInfoDao(Connection connection) {
         this.connection = connection;
+    }
+
+    public List<SoftInfo> findAllSoftInfo() {
+
+        ArrayList<SoftInfo> list = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(SELECT_ALL_SOFT)) {
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                SoftInfo u = new SoftInfo(rs.getInt("id"), rs.getString("soft_name"), null,
+                		                   rs.getString("genre_str"), null, rs.getString("model_str"),
+                		                   rs.getString("release_date"), rs.getString("price"), rs.getString("url"));
+                list.add(u);
+            }
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+        return list;
+
     }
 
     public List<SoftInfo> findAll(UserInfo loginUser) {
@@ -40,9 +67,9 @@ public class SoftInfoDao {
 
             while (rs.next()) {
 
-                SoftInfo u = new SoftInfo(rs.getInt("id"), rs.getString("soft_name"), null,
+                SoftInfo u = new SoftInfo(rs.getInt("soft_id"), rs.getInt("id"), rs.getString("soft_name"), null,
                 		                   rs.getString("genre_str"), null, rs.getString("model_str"),
-                		                   rs.getString("release_date"), rs.getString("price"));
+                		                   rs.getString("release_date"), rs.getString("price"), rs.getString("url"));
                 list.add(u);
             }
 
@@ -61,7 +88,6 @@ public class SoftInfoDao {
         ArrayList<Object> param = new ArrayList<>();
 
         if (softInfo.softNameisEmptyCondition()) {
-
 
             return findAll(loginUser);
 
@@ -91,9 +117,9 @@ public class SoftInfoDao {
 
             while (rs.next()) {
 
-                SoftInfo u = new SoftInfo(rs.getInt("id"), rs.getString("soft_name"), null,
+                SoftInfo u = new SoftInfo(rs.getInt("soft_id"), rs.getInt("id"), rs.getString("soft_name"), null,
 		                   rs.getString("genre_str"),null, rs.getString("model_str"),
-		                   rs.getString("release_date"), rs.getString("price"));
+		                   rs.getString("release_date"), rs.getString("price"), rs.getString("url"));
                 list.add(u);
 
             }
@@ -143,6 +169,7 @@ public class SoftInfoDao {
             	s.setModelStr(rs.getString("model_str"));
             	s.setReleaseDate(rs.getString("release_date"));
             	s.setPrice(rs.getString("price"));
+            	s.setUrl(rs.getString("url"));
 
                 return s;
             }
@@ -165,6 +192,7 @@ public class SoftInfoDao {
     		stmt.setInt(4,softResister.getModelId());
     		stmt.setString(5,softResister.getReleaseDate());
     		stmt.setString(6,softResister.getPrice());
+    		stmt.setString(7, softResister.getUrl());
     		stmt.executeUpdate();
 
     	} catch(SQLException e) {
@@ -180,8 +208,9 @@ public class SoftInfoDao {
             stmt.setInt(3, softUpdate.getModelId());
             stmt.setString(4, softUpdate.getReleaseDate());
             stmt.setString(5, softUpdate.getPrice());
-            stmt.setString(6, softUpdate.getSoftName());
-            stmt.setInt(7, loginUser.getId());
+            stmt.setString(6, softUpdate.getUrl());
+            stmt.setString(7, softUpdate.getSoftName());
+            stmt.setInt(8, loginUser.getId());
 
             stmt.executeUpdate();
 

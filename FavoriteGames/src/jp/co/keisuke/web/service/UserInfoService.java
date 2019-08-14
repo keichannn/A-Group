@@ -8,6 +8,37 @@ import jp.co.keisuke.web.util.DbUtil;
 
 public class UserInfoService {
 
+	public UserInfo findAll() {
+
+        try (Connection conn = DbUtil.getConnection()) {
+            UserInfoDao userInfoDao = new UserInfoDao(conn);
+            UserInfo user = userInfoDao.findAll();
+
+            return user;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+	}
+
+	public UserInfo findAllById(Integer id) {
+
+        try (Connection conn = DbUtil.getConnection()) {
+            UserInfoDao userInfoDao = new UserInfoDao(conn);
+            UserInfo user = userInfoDao.findAllById(id);
+
+            return user;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+	}
+
     public UserInfo authentication(String loginId, String pass) {
 
         try (Connection conn = DbUtil.getConnection()) {
@@ -52,6 +83,18 @@ public class UserInfoService {
             e.printStackTrace();
         }
 
+    }
+
+    public void update(UserInfo userUpdate, UserInfo loginUser) {
+
+        try (Connection conn = DbUtil.getConnection()) {
+        	UserInfoDao userInfoDao = new UserInfoDao(conn);
+
+            userInfoDao.update(userUpdate, loginUser);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void deleteById(UserInfo loginUser) {
