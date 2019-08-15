@@ -41,14 +41,9 @@
 			    </li>
 			    <li class="nav-item active">
 				  <a style="font-size: 20px; font-weight: bold; cursor: pointer;" class="nav-link"
-					 href="update.jsp" >更新画面
+					 href="userUpdateInput.jsp" >戻る
 				  </a>
 				</li>
-			    <li class="nav-item active">
-				  <a style="font-size: 20px; font-weight: bold; cursor: pointer;" class="nav-link"
-					 onclick="history.back(); return false;" >戻る
-				  </a>
-			    </li>
 			</ul>
 		</div>
   </div>
@@ -76,7 +71,7 @@
         </div>
         <div>
           <label class="item">PASS：</label>
-          <input type="text" name="pass"
+          <input type="password" name="pass"
                  value="${fn:escapeXml(sessionInfo.updateUser.pass)}" readonly>
         </div>
       </fieldset>

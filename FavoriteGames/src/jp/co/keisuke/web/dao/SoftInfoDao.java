@@ -16,7 +16,9 @@ public class SoftInfoDao {
     private static final String SELECT = "SELECT soft_id, id, soft_name, genre_str, model_str, release_date, price, url FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id WHERE ";
     private static final String SELECT_BY_ID = "SELECT id FROM soft_information WHERE id = ?";
     private static final String SELECT_BY_SOFT_NAME = "SELECT soft_name, s.genre_id, genre_str, s.model_id, model_str, release_date, price, url FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id WHERE soft_name = ?";
+    private static final String SELECT_ALL_LIKE_SOFT_NAME = "SELECT soft_name, s.genre_id, genre_str, s.model_id, model_str, release_date, price, url FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id WHERE soft_name LIKE '%?%' AND id = ?";
     private static final String SELECT_ALL = "SELECT soft_id, id, soft_name, s.genre_id, genre_str, s.model_id, model_str, release_date, price, url FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id WHERE id = ? ORDER BY soft_id";
+	private static final String SELECT_SORTED_SOFT = "SELECT soft_id, soft_name, genre_str, model_str, release_date, price, url FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id ORDER BY";
     private static final String ORDER_BY = " ORDER BY id";
     private static final String INSERT = "INSERT INTO soft_information(id,soft_name,genre_id,model_id,release_date,price,url) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE soft_information SET soft_name = ? ,genre_id = ?, model_id = ?, release_date = ?, price = ? , url = ? WHERE soft_name = ? AND id = ?";
@@ -55,6 +57,74 @@ public class SoftInfoDao {
 
     }
 
+    public List<SoftInfo> findSortedSoftInfo(String sort) {
+
+    	String str = null;
+
+    	if(sort.equals("price_asc")) {
+
+    		str = SELECT_SORTED_SOFT + " price ASC";
+
+    	} else if(sort.equals("price_desc")) {
+
+    		str = SELECT_SORTED_SOFT + " price DESC";
+
+    	} else if(sort.equals("releaseDate_asc")) {
+
+    		str = SELECT_SORTED_SOFT + " release_date ASC";
+
+    	} else if(sort.equals("releaseDate_desc")) {
+
+    		str = SELECT_SORTED_SOFT + " release_date DESC";
+    	}
+
+        ArrayList<SoftInfo> list = new ArrayList<>();
+
+        SoftInfo s = null;
+
+        try (PreparedStatement stmt = connection.prepareStatement(str)) {
+
+            ResultSet rs = stmt.executeQuery();
+
+        	if(sort.equals("price_asc") || sort.equals("price_desc")) {
+
+	            while (rs.next()) {
+
+	            	if(!rs.getString("price").equals("未定")&&!rs.getString("price").equals("URL参照")) {
+
+	            		s = new SoftInfo(rs.getInt("soft_id"), null, rs.getString("soft_name"), null,
+	 		                   rs.getString("genre_str"), null, rs.getString("model_str"),
+	 		                   rs.getString("release_date"), rs.getString("price"), rs.getString("url"));
+
+	                    list.add(s);
+
+	            	}
+
+	            }
+
+        	}
+
+        	while (rs.next()) {
+
+        		s = new SoftInfo(rs.getInt("soft_id"), null, rs.getString("soft_name"), null,
+		                   rs.getString("genre_str"), null, rs.getString("model_str"),
+		                   rs.getString("release_date"), rs.getString("price"), rs.getString("url"));
+
+                list.add(s);
+
+            }
+
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+        return list;
+
+    }
+
     public List<SoftInfo> findAll(UserInfo loginUser) {
 
         ArrayList<SoftInfo> list = new ArrayList<>();
@@ -62,6 +132,34 @@ public class SoftInfoDao {
         try (PreparedStatement stmt = connection.prepareStatement(SELECT_ALL)) {
 
         	stmt.setInt(1, loginUser.getId());
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                SoftInfo u = new SoftInfo(rs.getInt("soft_id"), rs.getInt("id"), rs.getString("soft_name"), null,
+                		                   rs.getString("genre_str"), null, rs.getString("model_str"),
+                		                   rs.getString("release_date"), rs.getString("price"), rs.getString("url"));
+                list.add(u);
+            }
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+        return list;
+    }
+
+    public List<SoftInfo> findAllByPartialMatch(UserInfo loginUser) {
+
+        ArrayList<SoftInfo> list = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(SELECT_ALL_LIKE_SOFT_NAME)) {
+
+        	stmt.setString(1, loginUser.getUserName());
+        	stmt.setInt(2, loginUser.getId());
 
             ResultSet rs = stmt.executeQuery();
 
@@ -93,7 +191,7 @@ public class SoftInfoDao {
 
         } else if (!softInfo.softNameisEmptyCondition()) {
 
-            whereCond.add("soft_name = ?");
+            whereCond.add("soft_name LIKE ?");
             param.add(softInfo.getSoftName());
 
         }
@@ -110,6 +208,13 @@ public class SoftInfoDao {
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             for (int i = 0; i < param.size(); i++) {
+
+            	if(i == 0) {
+
+            		stmt.setObject(i + 1, "%" + param.get(i) + "%");
+
+            	}
+
                 stmt.setObject(i + 1, param.get(i));
             }
 

@@ -77,15 +77,15 @@
   <p>あなたのIDは【 <span id="user_id">${fn:escapeXml(sessionInfo.loginUser.id)}</span> 】です</p>
 
   <form id="googleSearch" method=get action="http://www.google.co.jp/search">
-	  <table bgcolor="#FFFFFF" style="margin: 0 auto; margin-bottom: 3%;">
+	  <table style="margin: 0 auto; margin-bottom: 3%;">
 	    <tr>
 	      <td>
 	        <a href="http://www.google.co.jp/">
 	          <img src="http://www.google.com/logos/Logo_40wht.gif" border="0" alt="Google" align="absmiddle">
 	        </a>
 	  		<input type=text name=q size=31 maxlength=255 value="">
-			<input type=hidden name=ie value=Shift_JIS>
-			<input type=hidden name=oe value=Shift_JIS>
+			<input type=hidden name=ie value=UTF-8>
+			<input type=hidden name=oe value=UTF-8>
 			<input type=hidden name=hl value="ja">
 			<input type=submit name=btnG value="Google 検索">
 		  </td>

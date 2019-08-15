@@ -94,7 +94,7 @@
       </div>
       <div>
         <label class="item">PASS：</label>
-        <input type="text" name="pass"
+        <input type="password" name="pass"
           value="${fn:escapeXml(sessionInfo.updateUser.pass)}" style="width: 25%;">
         <c:if test="${not empty passErrMsg}">
           <p class="error" style="margin-top:1%;">${fn:escapeXml(passErrMsg)}</p>

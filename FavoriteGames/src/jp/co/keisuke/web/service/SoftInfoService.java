@@ -51,9 +51,18 @@ public class SoftInfoService {
 
     }
 
-    public boolean existSoftById(UserInfo loginUser) {
+    public List<SoftInfo> findAllByPartialMatch(UserInfo loginUser) {
 
-    	return findById(loginUser) != null;
+        try (Connection conn = DbUtil.getConnection()) {
+            SoftInfoDao softInfoDao = new SoftInfoDao(conn);
+            return softInfoDao.findAllByPartialMatch(loginUser);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
     }
 
     public SoftInfo findBySoftName(String softName) {
@@ -80,6 +89,25 @@ public class SoftInfoService {
 
         return null;
 
+    }
+
+    public List<SoftInfo> findSortedSoftInfo(String sort) {
+
+        List<SoftInfo> list = new ArrayList<SoftInfo>();
+
+        try (Connection conn = DbUtil.getConnection()) {
+            SoftInfoDao softInfoDao = new SoftInfoDao(conn);
+            list = softInfoDao.findSortedSoftInfo(sort);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+
+    }
+
+    public boolean existSoftById(UserInfo loginUser) {
+
+    	return findById(loginUser) != null;
     }
 
     public boolean existsSoftBySoftName(String softName) {

@@ -52,7 +52,25 @@
 
   <div style="font-size: 120%; color: red; margin-bottom: 3%;">※更新したい場合は、ソフト名をクリックしてください。</div>
 
-  <table id="selectResult_table" style="border:3px black solid;">
+  <c:if test="${not empty errMsg}">
+    <p class="error">${fn:escapeXml(errMsg)}</p>
+  </c:if>
+
+  <form id="form_margin_bottom" action="softSelect">
+ 	 <input type="hidden" name="from" value="fromSoftSelectResult">
+     <label>名前：</label>
+     <input type="text" name="softName" value="${fn:escapeXml(param.softName)}">
+    <button class="link_2" type="submit">検索</button>
+    <select name="sort" style="margin-left: 1%; padding: 0.5% 1%;" onchange="submit(this.form)">
+      <option value="sort">並び替え
+      <option value="releaseDate_asc">発売日：昇順
+      <option value="releaseDate_desc">発売日：降順
+      <option value="price_asc">価格：昇順
+      <option value="price_desc">価格：降順
+    </select>
+  </form>
+
+  <table style="border: 3px black solid; width: 90%; margin: 0 auto;">
     <thead>
       <tr>
         <th>ID</th>
@@ -87,5 +105,6 @@
     </tbody>
   </table>
 </div>
+
 </body>
 </html>

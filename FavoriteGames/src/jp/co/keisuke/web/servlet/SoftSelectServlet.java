@@ -1,6 +1,7 @@
 package jp.co.keisuke.web.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -21,17 +22,37 @@ public class SoftSelectServlet extends HttpServlet {
 
 		request.setCharacterEncoding("UTF-8");
         String softName = request.getParameter("softName");
+        String sort = request.getParameter("sort");
+        String from = request.getParameter("from");
 
         SessionInfo sessionInfo = ParamUtil.getSessionInfo(request.getSession());
-        SoftInfo cond = new SoftInfo(null, softName, null, null, null, null, null, null, null);
+
+        List<SoftInfo> list = new ArrayList<>();
         SoftInfoService softInfoService = new SoftInfoService();
 
-        List<SoftInfo> list = softInfoService.find(cond, sessionInfo.getLoginUser());
+        if(!ParamUtil.isNullOrEmpty(sort) && !sort.equals("sort")) {
 
-        if (list.isEmpty()) {
+        	list = softInfoService.findSortedSoftInfo(sort);
+
+        	request.setAttribute("softList", list);
+            request.getRequestDispatcher("softSelectResult.jsp").forward(request, response);
+
+        }
+
+        SoftInfo cond = new SoftInfo(null, softName, null, null, null, null, null, null, null);
+
+        list = softInfoService.find(cond, sessionInfo.getLoginUser());
+
+        if (list.isEmpty() && from.equals("fromSoftSelect")) {
 
             request.setAttribute("errMsg", "※ 入力されたデータはありませんでした");
             request.getRequestDispatcher("softSelect.jsp").forward(request, response);
+            return;
+
+        } else if (list.isEmpty() && from.equals("fromSoftSelectResult")) {
+
+            request.setAttribute("errMsg", "※ 入力されたデータはありませんでした");
+            request.getRequestDispatcher("softSelectResult.jsp").forward(request, response);
             return;
 
         }

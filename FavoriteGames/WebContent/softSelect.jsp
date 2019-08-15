@@ -60,6 +60,7 @@
   </c:if>
 
   <form id="form_margin_bottom" action="softSelect">
+  	 <input type="hidden" name="from" value="fromSoftSelect">
      <label>名前：</label>
      <input type="text" name="softName" value="${fn:escapeXml(param.softName)}">
     <button class="link_2" type="submit">検索</button>
