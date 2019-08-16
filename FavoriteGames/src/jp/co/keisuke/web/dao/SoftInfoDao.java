@@ -18,7 +18,7 @@ public class SoftInfoDao {
     private static final String SELECT_BY_SOFT_NAME = "SELECT soft_name, s.genre_id, genre_str, s.model_id, model_str, release_date, price, url FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id WHERE soft_name = ?";
     private static final String SELECT_ALL_LIKE_SOFT_NAME = "SELECT soft_name, s.genre_id, genre_str, s.model_id, model_str, release_date, price, url FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id WHERE soft_name LIKE '%?%' AND id = ?";
     private static final String SELECT_ALL = "SELECT soft_id, id, soft_name, s.genre_id, genre_str, s.model_id, model_str, release_date, price, url FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id WHERE id = ? ORDER BY soft_id";
-	private static final String SELECT_SORTED_SOFT = "SELECT soft_id, soft_name, genre_str, model_str, release_date, price, url FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id ORDER BY";
+	private static final String SELECT_SORTED_SOFT = "SELECT soft_id, soft_name, genre_str, model_str, release_date, price, url FROM soft_information s JOIN genre g ON s.genre_id = g.genre_id JOIN model m ON s.model_id = m.model_id WHERE soft_name LIKE ? || '%' ORDER BY ";
     private static final String ORDER_BY = " ORDER BY id";
     private static final String INSERT = "INSERT INTO soft_information(id,soft_name,genre_id,model_id,release_date,price,url) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE soft_information SET soft_name = ? ,genre_id = ?, model_id = ?, release_date = ?, price = ? , url = ? WHERE soft_name = ? AND id = ?";
@@ -57,25 +57,34 @@ public class SoftInfoDao {
 
     }
 
-    public List<SoftInfo> findSortedSoftInfo(String sort) {
+    public List<SoftInfo> findSortedSoftInfo(String sort, String softName) {
 
     	String str = null;
 
-    	if(sort.equals("price_asc")) {
+    	if(sort.equals("softName_asc")) {
 
-    		str = SELECT_SORTED_SOFT + " price ASC";
+     		str = SELECT_SORTED_SOFT + "soft_name ASC";
 
-    	} else if(sort.equals("price_desc")) {
+     	} else if(sort.equals("softName_desc")) {
 
-    		str = SELECT_SORTED_SOFT + " price DESC";
+     		str = SELECT_SORTED_SOFT + "soft_name DESC";
 
-    	} else if(sort.equals("releaseDate_asc")) {
+     	} else if(sort.equals("releaseDate_asc")) {
 
-    		str = SELECT_SORTED_SOFT + " release_date ASC";
+    		str = SELECT_SORTED_SOFT + "release_date ASC";
 
     	} else if(sort.equals("releaseDate_desc")) {
 
-    		str = SELECT_SORTED_SOFT + " release_date DESC";
+    		str = SELECT_SORTED_SOFT + "release_date DESC";
+
+    	} else if(sort.equals("price_asc")) {
+
+    		str = SELECT_SORTED_SOFT + "price ASC";
+
+    	} else if(sort.equals("price_desc")) {
+
+    		str = SELECT_SORTED_SOFT + "price DESC";
+
     	}
 
         ArrayList<SoftInfo> list = new ArrayList<>();
@@ -83,6 +92,8 @@ public class SoftInfoDao {
         SoftInfo s = null;
 
         try (PreparedStatement stmt = connection.prepareStatement(str)) {
+
+        	stmt.setString(1, softName);
 
             ResultSet rs = stmt.executeQuery();
 
@@ -191,7 +202,7 @@ public class SoftInfoDao {
 
         } else if (!softInfo.softNameisEmptyCondition()) {
 
-            whereCond.add("soft_name LIKE ?");
+            whereCond.add("soft_name LIKE ? || '%'");
             param.add(softInfo.getSoftName());
 
         }
@@ -211,7 +222,7 @@ public class SoftInfoDao {
 
             	if(i == 0) {
 
-            		stmt.setObject(i + 1, "%" + param.get(i) + "%");
+            		stmt.setObject(i + 1, param.get(i));
 
             	}
 

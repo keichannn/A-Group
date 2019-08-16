@@ -10,20 +10,18 @@ public class Review {
 	private String softStr;
 	private String modelStr;
 	private String contents;
+	private String dateTime;
 
 	public Review() {}
 
-	public Review(Integer id, String userName, String softStr, String modelStr, String contents) {
+	public Review(Integer reviewId ,Integer id, String userName, String softStr, String modelStr, String contents, String dateTime) {
+		this.reviewId = reviewId;
 		this.id = id;
 		this.userName = userName;
 		this.softStr = softStr;
 		this.modelStr = modelStr;
 		this.contents = contents;
-	}
-
-	public Review(Integer reviewId, Integer id, String userName, String softStr, String modelStr, String contents) {
-		this(id,userName,softStr,modelStr,contents);
-		this.reviewId = reviewId;
+		this.dateTime = dateTime;
 	}
 
 	public Integer getReviewId() {
@@ -84,6 +82,13 @@ public class Review {
 		this.contents = contents;
 	}
 
+	public String getDateTime() {
+		return dateTime;
+	}
+
+	public void setDateTime(String dateTime) {
+		this.dateTime = dateTime;
+	}
 
 	//elseMethod
     public boolean softNameisEmptyCondition() {

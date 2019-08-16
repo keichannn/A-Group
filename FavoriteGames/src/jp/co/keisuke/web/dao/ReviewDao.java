@@ -13,7 +13,7 @@ import jp.co.keisuke.web.entity.UserInfo;
 public class ReviewDao {
 
 	private static final String SELECT_ALL ="SELECT * FROM review";
-	private static final String INSERT = "INSERT INTO review(id,user_name,soft_name,model_str,contents) VALUES(?,?,?,?,?)";
+	private static final String INSERT = "INSERT INTO review(id,user_name,soft_name,model_str,contents,dateTime) VALUES(?,?,?,?,?,?)";
 	private static final String DELETE = "DELETE FROM review WHERE id = ? AND contents = ?";
 
 	private Connection conn;
@@ -30,7 +30,7 @@ public class ReviewDao {
 
     		while(rs.next()) {
 
-    			Review reviewInfo = new Review(rs.getInt("review_id"), rs.getInt("id"), rs.getString("user_name"), rs.getString("soft_name"), rs.getString("model_str"), rs.getString("contents"));
+    			Review reviewInfo = new Review(rs.getInt("review_id"), rs.getInt("id"), rs.getString("user_name"), rs.getString("soft_name"), rs.getString("model_str"), rs.getString("contents"), rs.getString("dateTime"));
     			list.add(reviewInfo);
 
     		}
@@ -67,6 +67,7 @@ public class ReviewDao {
     		stmt.setString(3, reviewInfo.getSoftStr());
     		stmt.setString(4, reviewInfo.getModelStr());
     		stmt.setString(5, reviewInfo.getContents());
+    		stmt.setString(6, reviewInfo.getDateTime());
 
     		stmt.executeUpdate();
 

@@ -91,13 +91,13 @@ public class SoftInfoService {
 
     }
 
-    public List<SoftInfo> findSortedSoftInfo(String sort) {
+    public List<SoftInfo> findSortedSoftInfo(String sort, String softName) {
 
         List<SoftInfo> list = new ArrayList<SoftInfo>();
 
         try (Connection conn = DbUtil.getConnection()) {
             SoftInfoDao softInfoDao = new SoftInfoDao(conn);
-            list = softInfoDao.findSortedSoftInfo(sort);
+            list = softInfoDao.findSortedSoftInfo(sort,softName);
         } catch (Exception e) {
             e.printStackTrace();
         }

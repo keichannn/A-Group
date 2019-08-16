@@ -1,6 +1,8 @@
 package jp.co.keisuke.web.servlet;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -63,12 +65,13 @@ System.out.println("review-get");
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-System.out.println("review-post");
-
 		request.setCharacterEncoding("UTF-8");
 		String softName = request.getParameter("softName");
 		String modelStr = request.getParameter("modelId");
 		String contents = request.getParameter("contents");
+
+		LocalDateTime nowDateTime = LocalDateTime.now();
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("y/MM/dd/ HH:mm:ss");
 
 		//ParamUtilから取得
 		Integer modelId = ParamUtil.checkAndParseInt(modelStr);
@@ -77,7 +80,8 @@ System.out.println("review-post");
 		//
 
 		//newで取得
-		Review reviewInfo = new Review(sessionInfo.getLoginUser().getId(), sessionInfo.getLoginUser().getUserName(), softName, modelName, contents);
+		Review reviewInfo = new Review(null,sessionInfo.getLoginUser().getId(), sessionInfo.getLoginUser().
+				                         getUserName(), softName, modelName, contents,fmt.format(nowDateTime));
 		ReviewService reviewService = new ReviewService();
 		//
 
@@ -104,6 +108,7 @@ System.out.println("review-post");
 
 		List<Review> list = reviewService.findReviewData();
 
+		request.getSession().setAttribute("dateTime", fmt.format(nowDateTime));
 		request.setAttribute("reviewList", list);
 		request.getRequestDispatcher("review.jsp").forward(request, response);
 

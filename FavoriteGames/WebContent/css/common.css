@@ -283,7 +283,6 @@ li a:hover {
 
 /* ----------------- */
 
-
 #index_attention{
 	width: 50%;
 	position: relative;
@@ -356,8 +355,15 @@ li a:hover {
     text-align:center;
 }
 
+#sort{
+	margin-left: 1%;
+	padding: 0.5% 1%;
+	background-color: black;
+	color:white;
+}
+
 #review{
-   width: 40%;
+   width: 45%;
    position:relative;
    top:10px;
    margin: 0 auto;
@@ -528,7 +534,7 @@ li a:hover {
 }
 
 #deleteUser{
-	font-size: 110%;
+	font-size: 130%;
 	position:relative;
 	top:200px;
 	text-align:center;

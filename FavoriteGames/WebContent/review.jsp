@@ -97,7 +97,7 @@
         <c:forEach var="review" items="${reviewList}">
         <form action="reviewDelete" method="post">
         <div style="margin-bottom: 2%;">
-        <div>No.${fn:escapeXml(review.reviewId)} テーマ【${fn:escapeXml(review.softStr)} / ${fn:escapeXml(review.modelStr)}】</div>
+        <div>No.${fn:escapeXml(review.reviewId)} テーマ【${fn:escapeXml(review.softStr)} / ${fn:escapeXml(review.modelStr)}】${fn:escapeXml(review.dateTime)}</div>
           <div>
   	        <span id="userName_review">${fn:escapeXml(review.userName)}【${fn:escapeXml(ageStrForReview)}】：</span>
   	        <span>${fn:escapeXml(review.contents)}　</span>

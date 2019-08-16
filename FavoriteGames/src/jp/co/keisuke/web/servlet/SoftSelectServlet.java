@@ -24,6 +24,13 @@ public class SoftSelectServlet extends HttpServlet {
         String softName = request.getParameter("softName");
         String sort = request.getParameter("sort");
         String from = request.getParameter("from");
+        String keepingSoftName = request.getParameter("keepingSoftName");
+
+        request.getSession().setAttribute("keepingSoftName", softName);
+
+        if(!ParamUtil.isNullOrEmpty(keepingSoftName) && keepingSoftName.equals(softName)) {
+        	request.getSession().setAttribute("keepingSoftName", keepingSoftName);
+        }
 
         SessionInfo sessionInfo = ParamUtil.getSessionInfo(request.getSession());
 
@@ -32,7 +39,7 @@ public class SoftSelectServlet extends HttpServlet {
 
         if(!ParamUtil.isNullOrEmpty(sort) && !sort.equals("sort")) {
 
-        	list = softInfoService.findSortedSoftInfo(sort);
+        	list = softInfoService.findSortedSoftInfo(sort,(String)request.getSession().getAttribute("keepingSoftName"));
 
         	request.setAttribute("softList", list);
             request.getRequestDispatcher("softSelectResult.jsp").forward(request, response);

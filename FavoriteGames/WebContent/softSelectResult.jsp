@@ -57,20 +57,26 @@
   </c:if>
 
   <form id="form_margin_bottom" action="softSelect">
- 	 <input type="hidden" name="from" value="fromSoftSelectResult">
-     <label>名前：</label>
-     <input type="text" name="softName" value="${fn:escapeXml(param.softName)}">
+
+    <input type="hidden" name="from" value="fromSoftSelectResult">
+    <label>名前：</label>
+    <input type="text" name="softName" value="${fn:escapeXml(param.softName)}">
     <button class="link_2" type="submit">検索</button>
-    <select name="sort" style="margin-left: 1%; padding: 0.5% 1%;" onchange="submit(this.form)">
+    <select name="sort" id="sort" onchange="submit(this.form)">
       <option value="sort">並び替え
+      <option value="softName_asc">ソフト名：昇順
+      <option value="softName_desc">ソフト名：降順
       <option value="releaseDate_asc">発売日：昇順
       <option value="releaseDate_desc">発売日：降順
       <option value="price_asc">価格：昇順
       <option value="price_desc">価格：降順
     </select>
+
+    <input type="hidden" name="keepingSoftName" value="${fn:escapeXml(keepingSoftName)}">
+
   </form>
 
-  <table style="border: 3px black solid; width: 90%; margin: 0 auto;">
+  <table style="border: 3px black solid; width: 90%; margin: 0 auto; table-layout: fixed;">
     <thead>
       <tr>
         <th>ID</th>
@@ -94,7 +100,7 @@
             <td>${fn:escapeXml(soft.modelStr)}</td>
             <td>${fn:escapeXml(soft.releaseDate)}</td>
             <td>${fn:escapeXml(soft.price)}</td>
-            <td><a href="${fn:escapeXml(soft.url)}" target="_blank">${fn:escapeXml(soft.url)}</a></td>
+            <td style="overflow:hidden; text-overflow:ellipsis;"><a href="${fn:escapeXml(soft.url)}" target="_blank">${fn:escapeXml(soft.url)}</a></td>
             <td>
               <input type="hidden" name="softName" value="${fn:escapeXml(soft.softName)}">
   	          <button class="link_2">削除</button>
